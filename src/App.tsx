@@ -1,17 +1,12 @@
 import React from 'react'
 import { useRoutes } from 'react-router-dom'
 import routes from '@/router'
-import { useSelector, shallowEqual } from 'react-redux'
+import { shallowEqual } from 'react-redux'
+import { useAppSelector } from '@/store'
 
 function App() {
-  interface IState {
-    counter: {
-      count: number
-    }
-  }
-
-  const { count } = useSelector(
-    (state: IState) => ({
+  const { count } = useAppSelector(
+    (state) => ({
       count: state.counter.count
     }),
     shallowEqual
