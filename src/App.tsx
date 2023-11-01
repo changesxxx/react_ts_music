@@ -1,21 +1,29 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useRoutes } from 'react-router-dom'
 import routes from '@/router'
-import { useSelector, shallowEqual } from 'react-redux'
+import { shallowEqual } from 'react-redux'
+import { useAppSelector } from '@/store'
+
+import { test, airTest } from '@/service/modules/home'
 
 function App() {
-  interface IState {
-    counter: {
-      count: number
-    }
-  }
-
-  const { count } = useSelector(
-    (state: IState) => ({
+  const { count } = useAppSelector(
+    (state) => ({
       count: state.counter.count
     }),
     shallowEqual
   )
+  useEffect(() => {
+    test().then((res) => {
+      console.log('test-----------')
+      console.log(res.data)
+    })
+
+    airTest().then((res) => {
+      console.log('airTest-----------')
+      console.log(res.data)
+    })
+  }, [])
 
   return (
     <div className="App">
