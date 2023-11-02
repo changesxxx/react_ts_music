@@ -14,3 +14,28 @@ export function airTest() {
     url: '/home/highscore'
   })
 }
+
+interface IData {
+  list: any[]
+  subtitle: string
+  title: string
+  type: string
+  _id: string
+}
+
+//单次请求拦截器
+export function longforTest() {
+  return AirRequest.request<IData>({
+    url: '/home/longfor',
+    interceptors: {
+      requestSuccessFn(config) {
+        console.log('/home/longfor 单次请求拦截')
+        return config
+      },
+      responseSuccessFn(response) {
+        console.log('/home/longfor 单次相应拦截')
+        return response
+      }
+    }
+  })
+}

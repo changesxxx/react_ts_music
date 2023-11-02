@@ -1,12 +1,12 @@
 import axios from 'axios'
-import type { AxiosInstance, AxiosRequestConfig } from 'axios'
-
+import type { AxiosResponse } from 'axios'
 //自定义拦截器类型
 import type customInterceptorsType from './type'
+import type { coverAxiosInstance } from './type'
 
 class MyRequest {
   //生命实例type
-  instance: AxiosInstance
+  instance: coverAxiosInstance
   //创建axios实例
   //config添加type类型
   constructor(config: customInterceptorsType) {
@@ -34,7 +34,7 @@ class MyRequest {
       }
     )
 
-    //对于单个请求的拦截器
+    //对于单个实例请求的拦截器
     //全局请求拦截器
     this.instance.interceptors.request.use(
       config.interceptors?.requestSuccessFn
@@ -46,8 +46,35 @@ class MyRequest {
   }
 
   //请求配置type
-  request(config: AxiosRequestConfig) {
-    return this.instance.request(config)
+  /*
+  customInterceptorsType: extends AxiosRequestConfig 继承自AxiosRequestConfig
+  又因requestSuccessFn:AxiosRequestConfig
+  所以这里才可以直接传参config
+  否则axios要求拦截器中的config type为InternalAxiosRequestConfig(headers必传项)
+  */
+  request<T = any>(config: customInterceptorsType) {
+    if (config?.interceptors?.requestSuccessFn) {
+      config = config.interceptors.requestSuccessFn(config)
+    }
+
+    /*
+      原有方式:return this.instance.request(config)
+      无法获取响应结果 响应拦截器无法添加
+      new Promise返回response结果 并在返回前添加响应拦截
+    */
+    return new Promise<T>((resolve, reject) => {
+      this.instance
+        .request<any, T>(config)
+        .then((res) => {
+          if (config?.interceptors?.responseSuccessFn) {
+            // res = config.interceptors.responseSuccessFn(res)
+          }
+          resolve(res)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    })
   }
 }
 
