@@ -2,9 +2,10 @@ import React from 'react'
 import { Navigate } from 'react-router-dom'
 import type { RouteObject } from 'react-router-dom'
 
-import Home from '@/views/Home'
-import Mine from '@/views/Mine'
-import Focus from '@/views/Focus'
+const Home = React.lazy(() => import('@/views/Home'))
+const Mine = React.lazy(() => import('@/views/Mine'))
+const Focus = React.lazy(() => import('@/views/Focus'))
+const Download = React.lazy(() => import('@/views/Download'))
 
 const routes: RouteObject[] = [
   {
@@ -13,7 +14,13 @@ const routes: RouteObject[] = [
   },
   {
     path: '/home',
-    element: <Home />
+    element: <Home />,
+    children: [
+      {
+        path: '/home',
+        element: <Home />
+      }
+    ]
   },
   {
     path: '/mine',
@@ -22,6 +29,10 @@ const routes: RouteObject[] = [
   {
     path: '/focus',
     element: <Focus />
+  },
+  {
+    path: '/download',
+    element: <Download />
   }
 ]
 

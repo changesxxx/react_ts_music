@@ -1,5 +1,4 @@
 import axios from 'axios'
-import type { AxiosResponse } from 'axios'
 //自定义拦截器类型
 import type customInterceptorsType from './type'
 import type { coverAxiosInstance } from './type'
@@ -75,6 +74,14 @@ class MyRequest {
           reject(err)
         })
     })
+  }
+
+  get<T>(config: customInterceptorsType) {
+    return this.request<T>({ ...config, method: 'GET' })
+  }
+
+  post<T>(config: customInterceptorsType) {
+    return this.request<T>({ ...config, method: 'POST' })
   }
 }
 

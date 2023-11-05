@@ -7,6 +7,9 @@ import { HashRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 //store
 import store from '@/store'
+//theme
+import { ThemeProvider } from 'styled-components'
+import { theme } from '@/assets/theme'
 
 //css重置
 import 'normalize.css'
@@ -19,7 +22,9 @@ root.render(
   // <React.StrictMode>
   <HashRouter>
     <Provider store={store}>
-      <App />
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
     </Provider>
   </HashRouter>
 
