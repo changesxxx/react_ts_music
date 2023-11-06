@@ -1,8 +1,8 @@
 import Request from '@/service'
-import type { IBanner } from './type'
+import type { IBanners } from './type'
 
 export function fetchGetBanner() {
-  return Request.get<IBanner>({
+  return Request.get<IBanners>({
     url: '/banner'
   })
 }

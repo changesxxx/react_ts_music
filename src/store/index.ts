@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { useSelector, TypedUseSelectorHook } from 'react-redux'
-import counterSlice from './modules/counter/counter'
+import recommendReducer from './modules/Recommend/recommend'
 
 const store = configureStore({
   reducer: {
-    counter: counterSlice
+    recommend: recommendReducer
   }
 })
 
@@ -21,5 +21,7 @@ export interface TypedUseSelectorHook<TState> {
 }
 */
 export const useAppSelector: TypedUseSelectorHook<IRootType> = useSelector
+
+export type AppDispatch = typeof store.dispatch
 
 export default store

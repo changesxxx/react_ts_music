@@ -10,4 +10,8 @@ export interface IBanner {
   bannerBizType: string
 }
 
+export interface IBanners {
+  banners: IBanner[]
+}
+
 export {}

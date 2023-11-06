@@ -26,7 +26,7 @@ class MyRequest {
     this.instance.interceptors.response.use(
       (response) => {
         console.log('全局响应成功拦截器')
-        return response
+        return response.data
       },
       (err) => {
         console.log('全局响应失败拦截器')
