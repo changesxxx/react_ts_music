@@ -4,6 +4,8 @@ export interface Ititle {
   url: string
 }
 
+type ITab = Omit<Ititle, 'isLink'>
+
 export const titleArr: Ititle[] = [
   {
     title: '发现音乐',
@@ -39,6 +41,33 @@ export const titleArr: Ititle[] = [
     title: '下载客户端',
     isLink: true,
     url: '/download'
+  }
+]
+
+export const HomeTabItem: ITab[] = [
+  {
+    title: '推荐',
+    url: '/home'
+  },
+  {
+    title: '排行榜',
+    url: '/home/rank'
+  },
+  {
+    title: '歌单',
+    url: '/home/songMenu'
+  },
+  {
+    title: '主播电台',
+    url: '/home/station'
+  },
+  {
+    title: '歌手',
+    url: '/home/singer'
+  },
+  {
+    title: '新碟上架',
+    url: '/home/newDisc'
   }
 ]
 
