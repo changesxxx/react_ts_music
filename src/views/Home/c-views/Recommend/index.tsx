@@ -7,16 +7,20 @@ import { useAppSelector } from '@/store'
 import { recommendAction } from '@/store/modules/Recommend/recommend'
 
 import RecommendWrapper from './style'
-import { useDispatch } from 'react-redux'
+import { shallowEqual, useDispatch } from 'react-redux'
+import Banner from './c-cnps/Banner'
 
 type Iprops = {
   children?: ReactNode
 }
 
 const Recommend: FC<Iprops> = () => {
-  /* const { banners } = useAppSelector((state) => {
-    banners: state.recommend.banner
-  }) */
+  const { banners } = useAppSelector(
+    (state) => ({
+      banners: state.recommend.banners
+    }),
+    shallowEqual
+  )
 
   const dispatch = useDispatch<AppDispatch>()
 
@@ -26,11 +30,11 @@ const Recommend: FC<Iprops> = () => {
 
   return (
     <RecommendWrapper>
-      {/*     <div className="container wrap-v2">
-        {banners.map((item: any) => {
-          ;<div key={item.imageUrl}>{item.imageUrl}</div>
-        })}
-      </div> */}
+      {
+        <div className="container wrap-v2">
+          <Banner bannerList={banners}></Banner>
+        </div>
+      }
     </RecommendWrapper>
   )
 }

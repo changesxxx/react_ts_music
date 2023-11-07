@@ -8,7 +8,7 @@ type Iprops = {
 }
 
 const Rank: FC<Iprops> = () => {
-  return <RankWrapper>Rank</RankWrapper>
+  return <RankWrapper></RankWrapper>
 }
 
 export default memo(Rank)

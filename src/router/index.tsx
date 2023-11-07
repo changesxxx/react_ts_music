@@ -15,6 +15,8 @@ const Station = React.lazy(() => import('@/views/Home/c-views/Station'))
 const Singer = React.lazy(() => import('@/views/Home/c-views/Singer'))
 const NewDisc = React.lazy(() => import('@/views/Home/c-views/NewDisc'))
 
+import Demo from '@/views/Demo'
+
 const routes: RouteObject[] = [
   {
     path: '/home',
@@ -58,6 +60,10 @@ const routes: RouteObject[] = [
   {
     path: '/download',
     element: <Download />
+  },
+  {
+    path: '/demo',
+    element: <Demo />
   },
   {
     path: '/',
