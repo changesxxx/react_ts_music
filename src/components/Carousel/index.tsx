@@ -42,6 +42,9 @@ const Carousel: React.ForwardRefRenderFunction<CarouselRef, Iprops> = (
   //当前index
   const currentIndex = useRef<number>(0)
 
+  //timer
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
   //手动点击下一个(+1)/上一个(-1)
   function switchHandle(num: number) {
     //计算切换后的index
@@ -81,6 +84,8 @@ const Carousel: React.ForwardRefRenderFunction<CarouselRef, Iprops> = (
   /* 对外暴漏方法 下一个 */
   function slickNext() {
     switchHandle(+1)
+    //清除定时器 重新新建定时器
+    createTimer()
   }
 
   /* 对外暴漏方法 上一个 */
@@ -88,7 +93,12 @@ const Carousel: React.ForwardRefRenderFunction<CarouselRef, Iprops> = (
     switchHandle(-1)
   }
   function createTimer() {
-    const timer = setInterval(() => {
+    //forwardRef 副作用会执行两次组件 加载组件时需判断是否有定时器如有定时器需先取消
+    if (timerRef.current) {
+      clearInterval(timerRef.current)
+      timerRef.current = null
+    }
+    timerRef.current = setInterval(() => {
       switchHandle(+1)
     }, autoplaySpeed)
   }
@@ -101,7 +111,31 @@ const Carousel: React.ForwardRefRenderFunction<CarouselRef, Iprops> = (
       carouselWidth.current = carouselRef.current.offsetWidth
       childrenLength.current = carouselRef.current.children.length - 1
     }
-  })
+
+    console.log('useEffect')
+
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'hidden') {
+        console.log('hidden')
+      } else if (document.visibilityState === 'visible') {
+        console.log('visible')
+      }
+    })
+
+    /*    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'hidden') {
+        if (timerRef.current) {
+          clearInterval(timerRef.current)
+          timerRef.current = null
+        }
+      } else if (document.visibilityState === 'visible') {
+        if (!timerRef.current) {
+          switchHandle(+1)
+          createTimer()
+        }
+      }
+    }) */
+  }, [])
 
   // 使用 useImperativeHandle 声明要暴露的方法
   useImperativeHandle(ref, () => ({

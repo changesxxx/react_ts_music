@@ -1,8 +1,9 @@
-import React, { memo } from 'react'
+import React, { memo, useRef } from 'react'
 import type { FC, ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 
 import Carousel from '@/components/Carousel'
+import type { CarouselRef } from '@/components/Carousel'
 
 import BannerWrapper from './style'
 import type { IBanner } from '@/service/modules/home/type'
@@ -15,10 +16,17 @@ type Iprops = {
 const Banner: FC<Iprops> = (props) => {
   const { bannerList } = props
 
+  const carouselRef = useRef<CarouselRef>(null)
+
+  function next() {
+    if (carouselRef.current) carouselRef.current.slickNext()
+  }
+
   return (
     <BannerWrapper>
       <div className="left ">
-        <Carousel>
+        <button onClick={next}>+</button>
+        <Carousel autoplay={true} ref={carouselRef}>
           {bannerList.map((item) => {
             return (
               <div key={item.imageUrl} className="banner-item">

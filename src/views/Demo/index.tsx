@@ -24,7 +24,7 @@ const Demo: FC<Iprops> = () => {
     <DemoWrapper>
       <div className="container wrap-v2">
         <div className="left">
-          <Carousel ref={myRef} autoplay={false}>
+          <Carousel ref={myRef} autoplay={true}>
             {elArr.map((item) => {
               return <div key={item}>{item}</div>
             })}
