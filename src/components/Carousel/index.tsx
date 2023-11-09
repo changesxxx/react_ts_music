@@ -75,6 +75,12 @@ const Carousel: React.ForwardRefRenderFunction<CarouselRef, Iprops> = (
       /*
         节点*节点宽度
       */
+      console.log(
+        'currentIndex.current:',
+        currentIndex.current,
+
+        currentIndex.current * carouselWidth.current
+      )
       carouselRef.current.style.transform = `translateX(-${
         currentIndex.current * carouselWidth.current
       }px)`
@@ -93,34 +99,49 @@ const Carousel: React.ForwardRefRenderFunction<CarouselRef, Iprops> = (
     switchHandle(-1)
   }
   function createTimer() {
+    console.log('创建定时器', timerRef.current)
+
     //forwardRef 副作用会执行两次组件 加载组件时需判断是否有定时器如有定时器需先取消
-    if (timerRef.current) {
+    /*   if (timerRef.current) {
       clearInterval(timerRef.current)
       timerRef.current = null
-    }
+      console.log('取消定时器')
+    } */
     timerRef.current = setInterval(() => {
       switchHandle(+1)
     }, autoplaySpeed)
+
+    console.log('创建定时器成功', timerRef.current)
   }
 
   useEffect(() => {
-    if (carouselRef.current) {
-      if (autoplay) {
-        createTimer()
-      }
-      carouselWidth.current = carouselRef.current.offsetWidth
-      childrenLength.current = carouselRef.current.children.length - 1
-    }
-
     console.log('useEffect')
 
-    document.addEventListener('visibilitychange', function () {
-      if (document.visibilityState === 'hidden') {
-        console.log('hidden')
-      } else if (document.visibilityState === 'visible') {
-        console.log('visible')
+    /*  if (carouselRef.current) {
+      if (autoplay) {
+        console.log('autopla为真 创建定时器')
+        // createTimer()
+        carouselWidth.current = carouselRef.current.offsetWidth
+        childrenLength.current = carouselRef.current.children.length - 1
+        console.log('children', carouselRef.current.children)
+        console.log('length', carouselRef.current.children.length)
       }
-    })
+    } */
+
+    /*  if (autoplay) {
+      document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'hidden') {
+          console.log('hidden')
+          if (timerRef.current) {
+            clearInterval(timerRef.current)
+            timerRef.current = null
+          }
+        } else if (document.visibilityState === 'visible') {
+          switchHandle(+1)
+          createTimer()
+        }
+      })
+    } */
 
     /*    document.addEventListener('visibilitychange', function () {
       if (document.visibilityState === 'hidden') {
@@ -135,7 +156,7 @@ const Carousel: React.ForwardRefRenderFunction<CarouselRef, Iprops> = (
         }
       }
     }) */
-  }, [])
+  }, [carouselRef.current?.children])
 
   // 使用 useImperativeHandle 声明要暴露的方法
   useImperativeHandle(ref, () => ({

@@ -15,7 +15,6 @@ class MyRequest {
     //全局请求拦截器
     this.instance.interceptors.request.use(
       (config) => {
-        console.log('全局请求成功拦截器')
         return config
       },
       (err) => {
@@ -25,7 +24,6 @@ class MyRequest {
     //全局响应拦截器
     this.instance.interceptors.response.use(
       (response) => {
-        console.log('全局响应成功拦截器')
         return response.data
       },
       (err) => {
