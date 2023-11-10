@@ -7,7 +7,7 @@ import ViewHeader from '@/components/view-header'
 function App() {
   return (
     <div className="App">
-      {/* <ViewHeader></ViewHeader> */}
+      <ViewHeader></ViewHeader>
       <Suspense fallback=""> {useRoutes(routes)}</Suspense>
     </div>
   )

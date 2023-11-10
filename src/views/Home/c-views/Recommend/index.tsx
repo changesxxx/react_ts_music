@@ -30,11 +30,7 @@ const Recommend: FC<Iprops> = () => {
 
   return (
     <RecommendWrapper>
-      {
-        <div className="container wrap-v2">
-          <Banner bannerList={banners}></Banner>
-        </div>
-      }
+      <Banner bannerList={banners}></Banner>
     </RecommendWrapper>
   )
 }

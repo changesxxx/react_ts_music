@@ -9,6 +9,13 @@ const DemoWrapper = styled.div`
 
     .left {
       flex: 1;
+      .item {
+        font-size: 64px;
+        font-weight: 700;
+        line-height: 285px;
+        text-align: center;
+        color: #fff;
+      }
     }
     .right {
       box-sizing: border-box;

@@ -5,7 +5,9 @@ import React, {
   forwardRef,
   useImperativeHandle
 } from 'react'
-import type { FC, ReactElement } from 'react'
+import type { ReactElement } from 'react'
+
+import { _throttle } from '@/utils/throttle'
 
 import CarouselWrapper from './style'
 
@@ -14,6 +16,7 @@ type Iprops = {
   autoplay?: boolean
   autoplaySpeed?: number
   speed?: number
+  beforeChange?: (current: number) => void
 }
 
 export interface CarouselRef {
@@ -29,7 +32,8 @@ const Carousel: React.ForwardRefRenderFunction<CarouselRef, Iprops> = (
     children,
     autoplay = true,
     autoplaySpeed = 3500,
-    speed = 2500
+    speed = 1500,
+    beforeChange
   } = props
 
   //轮播图容器el
@@ -45,14 +49,27 @@ const Carousel: React.ForwardRefRenderFunction<CarouselRef, Iprops> = (
   //timer
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
+  /* 监听页面是否可视 */
+  let hiddenTime = 0
+  let visibleTime
+  let timer: any = null
+
   //手动点击下一个(+1)/上一个(-1)
   function switchHandle(num: number) {
     //计算切换后的index
     currentIndex.current += num
 
+    if (beforeChange) {
+      /*     currentIndex.current === childrenLength.current
+        ? beforeChange(0)
+        : beforeChange(currentIndex.current) */
+
+      beforeChange(currentIndex.current)
+    }
+
     if (carouselRef.current) {
       //初始化动画
-      carouselRef.current.style.transition = `transform ${speed}ms ease`
+      carouselRef.current.style.transition = `transform ${speed}ms ease-out 0s`
       /*
         如果计算后的index小于了最小值0 判断为是第一页进行上一个操作
         将index设置为最后一个节点 并且将动画取消
@@ -75,12 +92,6 @@ const Carousel: React.ForwardRefRenderFunction<CarouselRef, Iprops> = (
       /*
         节点*节点宽度
       */
-      console.log(
-        'currentIndex.current:',
-        currentIndex.current,
-
-        currentIndex.current * carouselWidth.current
-      )
       carouselRef.current.style.transform = `translateX(-${
         currentIndex.current * carouselWidth.current
       }px)`
@@ -88,74 +99,66 @@ const Carousel: React.ForwardRefRenderFunction<CarouselRef, Iprops> = (
   }
 
   /* 对外暴漏方法 下一个 */
-  function slickNext() {
+  const slickNext = _throttle(function () {
     switchHandle(+1)
-    //清除定时器 重新新建定时器
-    createTimer()
-  }
+  }, 1500)
 
   /* 对外暴漏方法 上一个 */
-  function slickPrev() {
+  const slickPrev = _throttle(function () {
     switchHandle(-1)
-  }
-  function createTimer() {
-    console.log('创建定时器', timerRef.current)
+  }, 1500)
+  /*  function slickPrev() {
+    switchHandle(-1)
+  } */
 
-    //forwardRef 副作用会执行两次组件 加载组件时需判断是否有定时器如有定时器需先取消
-    /*   if (timerRef.current) {
-      clearInterval(timerRef.current)
-      timerRef.current = null
-      console.log('取消定时器')
-    } */
+  /* 创建定时器 */
+
+  function createTimer() {
     timerRef.current = setInterval(() => {
       switchHandle(+1)
     }, autoplaySpeed)
+  }
 
-    console.log('创建定时器成功', timerRef.current)
+  /* 取消定时器 */
+  function clearTimer() {
+    if (timerRef.current) clearInterval(timerRef.current)
+    timerRef.current = null
+  }
+
+  /* 页面可视(用户切换标签或者后台浏览器)处理 */
+  function visibilityChangeHandle() {
+    if (document.visibilityState === 'hidden') {
+      //切换初始时间
+      hiddenTime = new Date().getTime()
+      //创建定时器 取消轮播动画
+      timer = setTimeout(clearTimer, autoplaySpeed)
+    } else if (document.visibilityState === 'visible') {
+      //切换回时间
+      visibleTime = new Date().getTime()
+      //清除取消轮播动画定时器
+      clearTimeout(timer)
+
+      if (visibleTime - hiddenTime > autoplaySpeed) {
+        //如果大于了轮播动画一次执行时长 上面定时器将会取消了轮播动画 页面返回需重新创建轮播动画
+        createTimer()
+      }
+    }
   }
 
   useEffect(() => {
-    console.log('useEffect')
-
-    /*  if (carouselRef.current) {
+    if (carouselRef.current?.children.length) {
       if (autoplay) {
-        console.log('autopla为真 创建定时器')
-        // createTimer()
+        createTimer()
         carouselWidth.current = carouselRef.current.offsetWidth
         childrenLength.current = carouselRef.current.children.length - 1
-        console.log('children', carouselRef.current.children)
-        console.log('length', carouselRef.current.children.length)
+        //页面切换 处理轮播
+        document.addEventListener('visibilitychange', visibilityChangeHandle)
       }
-    } */
+    }
 
-    /*  if (autoplay) {
-      document.addEventListener('visibilitychange', function () {
-        if (document.visibilityState === 'hidden') {
-          console.log('hidden')
-          if (timerRef.current) {
-            clearInterval(timerRef.current)
-            timerRef.current = null
-          }
-        } else if (document.visibilityState === 'visible') {
-          switchHandle(+1)
-          createTimer()
-        }
-      })
-    } */
-
-    /*    document.addEventListener('visibilitychange', function () {
-      if (document.visibilityState === 'hidden') {
-        if (timerRef.current) {
-          clearInterval(timerRef.current)
-          timerRef.current = null
-        }
-      } else if (document.visibilityState === 'visible') {
-        if (!timerRef.current) {
-          switchHandle(+1)
-          createTimer()
-        }
-      }
-    }) */
+    return () => {
+      document.removeEventListener('visibilitychange', visibilityChangeHandle)
+    }
   }, [carouselRef.current?.children])
 
   // 使用 useImperativeHandle 声明要暴露的方法
@@ -180,7 +183,5 @@ const Carousel: React.ForwardRefRenderFunction<CarouselRef, Iprops> = (
 }
 // 使用 forwardRef 包裹组件以确保正确处理 ref
 const ForwardedCarousel = forwardRef(Carousel)
-// export default forwardRef(memo(Carousel))
-// export default forwardRef(Carousel)
+
 export default memo(ForwardedCarousel)
-// export default memo()forwardRef(memo(Carousel))

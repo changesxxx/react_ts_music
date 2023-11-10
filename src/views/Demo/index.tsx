@@ -26,7 +26,11 @@ const Demo: FC<Iprops> = () => {
         <div className="left">
           <Carousel ref={myRef} autoplay={true}>
             {elArr.map((item) => {
-              return <div key={item}>{item}</div>
+              return (
+                <div className="item" key={item}>
+                  {item}
+                </div>
+              )
             })}
           </Carousel>
         </div>

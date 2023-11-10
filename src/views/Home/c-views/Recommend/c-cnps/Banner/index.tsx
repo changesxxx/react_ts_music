@@ -1,4 +1,4 @@
-import React, { memo, useRef } from 'react'
+import React, { memo, useRef, useState } from 'react'
 import type { FC, ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -18,28 +18,57 @@ const Banner: FC<Iprops> = (props) => {
 
   const carouselRef = useRef<CarouselRef>(null)
 
-  function next() {
-    if (carouselRef.current) carouselRef.current.slickNext()
+  const [index, setIndex] = useState(0)
+
+  function switchHandle(isNext = true) {
+    if (carouselRef.current) {
+      isNext ? carouselRef.current.slickNext() : carouselRef.current.slickPrev()
+    }
+  }
+
+  function getCurrentIndex(currentIndex: number) {
+    setIndex(currentIndex)
+    console.log(currentIndex)
   }
 
   return (
-    <BannerWrapper>
-      <div className="left ">
-        <button onClick={next}>+</button>
-        <Carousel autoplay={true} ref={carouselRef}>
-          {bannerList.map((item) => {
-            return (
-              <div key={item.imageUrl} className="banner-item">
-                <img src={item.imageUrl} alt="" />
-              </div>
-            )
-          })}
-        </Carousel>
-      </div>
-      <div className="right sprite_download">
-        <Link to="/download" className="link sprite_download">
-          下载客户端
-        </Link>
+    <BannerWrapper
+      $backgroundImg={`${bannerList[index]?.imageUrl}?imageView&blur=40x20`}
+    >
+      <div className="banner wrap-v2">
+        <div className="left ">
+          <Carousel
+            autoplay={true}
+            ref={carouselRef}
+            beforeChange={getCurrentIndex}
+          >
+            {bannerList.map((item) => {
+              return (
+                <div key={item.imageUrl} className="banner-item">
+                  <img src={item.imageUrl} alt="" />
+                </div>
+              )
+            })}
+          </Carousel>
+        </div>
+        <div className="right sprite_download">
+          <Link to="/download" className="link sprite_download">
+            下载客户端
+          </Link>
+        </div>
+
+        <a
+          className="btn sprite_banner prev"
+          onClick={() => {
+            switchHandle(false)
+          }}
+        ></a>
+        <a
+          className="btn sprite_banner next"
+          onClick={() => {
+            switchHandle()
+          }}
+        ></a>
       </div>
     </BannerWrapper>
   )

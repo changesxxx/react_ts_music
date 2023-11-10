@@ -10,16 +10,11 @@ const CarouselWrapper = styled.div`
     width: 100%;
     height: 100%;
 
-    /* transition: transform 1.5s ease; */
+    /* transition: transform 0s ease; */
     .carousel-item {
       width: 100%;
       flex-shrink: 0;
     }
-  }
-
-  button {
-    position: relative;
-    top: -22px;
   }
 `
 
