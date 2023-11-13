@@ -4,6 +4,7 @@ import type { FC, ReactNode } from 'react'
 import DemoWrapper from './style'
 
 import Carousel from '@/components/Carousel'
+import SongMenuItem from '@/components/song-menu-item'
 
 import type { CarouselRef } from '@/components/Carousel'
 
@@ -22,7 +23,7 @@ const Demo: FC<Iprops> = () => {
 
   return (
     <DemoWrapper>
-      <div className="container wrap-v2">
+      {/*   <div className="container wrap-v2">
         <div className="left">
           <Carousel ref={myRef} autoplay={true}>
             {elArr.map((item) => {
@@ -38,7 +39,24 @@ const Demo: FC<Iprops> = () => {
           <button onClick={next}>+</button>
           <button>-</button>
         </div>
-      </div>
+      </div> */}
+
+      <SongMenuItem
+        songMenu={{
+          id: 2075587022,
+          type: 0,
+          name: '助眠辑 | 自然音，伴灵动乐符萦绕耳畔',
+          copywriter: '',
+          picUrl:
+            'https://p2.music.126.net/sixunTcvD_IXeVqxZnpHkA==/109951163452086313.jpg',
+          canDislike: true,
+          trackNumberUpdateTime: 1533916733093,
+          playCount: 29301288,
+          trackCount: 104,
+          highQuality: true,
+          alg: 'alg_high_quality'
+        }}
+      ></SongMenuItem>
     </DemoWrapper>
   )
 }

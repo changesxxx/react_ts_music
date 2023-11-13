@@ -1,5 +1,8 @@
-import type { IBanners } from '@/service/modules/home/type'
+import type { IBanner, IRecommend } from '@/service/modules/home/type'
 
-export type IInitialState = IBanners
+export interface IInitialState {
+  banners: IBanner[]
+  recommendList: IRecommend[]
+}
 
 export {}

@@ -104,6 +104,7 @@ const Carousel: React.ForwardRefRenderFunction<CarouselRef, Iprops> = (
   const slickNext = _throttle(function () {
     clearTimer()
     switchHandle(+1)
+    createTimer()
   }, 1500)
 
   /* 对外暴漏方法 上一个 */
@@ -117,8 +118,6 @@ const Carousel: React.ForwardRefRenderFunction<CarouselRef, Iprops> = (
   const createTimer = useCallback(
     _shake(function () {
       if (autoplay && !timerRef.current) {
-        console.log('创建定时器')
-
         timerRef.current = setInterval(() => {
           switchHandle(+1)
         }, autoplaySpeed)
@@ -130,7 +129,6 @@ const Carousel: React.ForwardRefRenderFunction<CarouselRef, Iprops> = (
   /* 取消定时器 */
   const clearTimer = useCallback(
     _throttle(function () {
-      console.log('取消定时器')
       if (timerRef.current) clearInterval(timerRef.current)
       timerRef.current = null
     }, 1000),

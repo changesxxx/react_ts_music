@@ -31,7 +31,7 @@ const HeaderWrapper = styled.div`
       height: 69px;
 
       cursor: pointer;
-      background-position: 0 0;
+      /* background-position: 0 0; */
 
       a {
         display: block;
