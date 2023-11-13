@@ -2,7 +2,7 @@ import React, { memo } from 'react'
 import type { FC, ReactNode } from 'react'
 
 import { IRecommend } from '@/service/modules/home/type'
-import { playCountFormat } from '@/utils/format'
+import { imgUrlFormat, playCountFormat } from '@/utils/format'
 
 import SongMenuItemWrapper from './style'
 
@@ -18,7 +18,11 @@ const SongMenuItem: FC<Iprops> = (props) => {
       <div className="song-item">
         <div className="cover">
           <a href="./" className="cover-img">
-            <img src={songMenu.picUrl} alt="" className="image" />
+            <img
+              src={imgUrlFormat(songMenu.picUrl, 140)}
+              alt=""
+              className="image"
+            />
           </a>
           <div className="mask image_cover"></div>
           <div className="bottom image_cover">

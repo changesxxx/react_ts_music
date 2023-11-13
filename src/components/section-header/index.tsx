@@ -15,7 +15,10 @@ type Iprops = {
 const SectionHeader: FC<Iprops> = (props) => {
   const { title, tabList = [] } = props
   return (
-    <SectionHeaderWrapper className="sprite_02">
+    <SectionHeaderWrapper
+      className="sprite_02"
+      $isEnd={tabList.length > 0 ? 'space-between' : 'flex-end'}
+    >
       <div className="title">
         <a className="link" href={title.link}>
           {title.text}
@@ -37,7 +40,7 @@ const SectionHeader: FC<Iprops> = (props) => {
           </ul>
         )}
 
-        <div className="more ">
+        <div className="more">
           <a>更多</a>
           <i className="sprite_02"></i>
         </div>

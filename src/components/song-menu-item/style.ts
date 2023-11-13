@@ -8,6 +8,7 @@ const SongMenuItemWrapper = styled.div`
       position: relative;
       width: 100%;
       height: 140px;
+      cursor: pointer;
 
       a {
         display: block;
@@ -26,7 +27,6 @@ const SongMenuItemWrapper = styled.div`
         left: 0;
         right: 0;
         background-position: 0 0;
-        z-index: 1;
       }
 
       .bottom {
@@ -60,6 +60,10 @@ const SongMenuItemWrapper = styled.div`
           height: 17px;
           margin-right: 10px;
           background-position: 0 0;
+          cursor: pointer;
+          &:hover {
+            background-position: 0 -60px;
+          }
         }
       }
     }

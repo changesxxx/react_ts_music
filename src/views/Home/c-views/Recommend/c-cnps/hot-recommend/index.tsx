@@ -4,6 +4,7 @@ import type { FC, ReactNode } from 'react'
 import { shallowEqual } from 'react-redux'
 
 import SectionHeader from '@/components/section-header'
+import SongMenuItem from '@/components/song-menu-item'
 
 import HotRecommendWrapper from './style'
 import { useAppSelector } from '@/store'
@@ -19,9 +20,6 @@ const HotRecommend: FC<Iprops> = () => {
     }),
     shallowEqual
   )
-  useEffect(() => {
-    console.log(recommendList)
-  }, [recommendList])
 
   return (
     <HotRecommendWrapper>
@@ -31,8 +29,12 @@ const HotRecommend: FC<Iprops> = () => {
       ></SectionHeader>
 
       <div className="menu-container">
-        {recommendList.map((item) => {
-          return <div key={item.id}>{item.name}</div>
+        {recommendList.slice(0, 8).map((item) => {
+          return (
+            <div className="item" key={item.id}>
+              <SongMenuItem songMenu={item}></SongMenuItem>
+            </div>
+          )
         })}
       </div>
     </HotRecommendWrapper>

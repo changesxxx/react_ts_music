@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-const DemoWrapper = styled.div`
+const NewDiscWrapper = styled.div`
   .container {
     width: 689px;
     .new-disc {
@@ -44,4 +44,4 @@ const DemoWrapper = styled.div`
   }
 `
 
-export default DemoWrapper
+export default NewDiscWrapper

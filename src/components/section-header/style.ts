@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-const SectionHeaderWrapper = styled.div`
+const SectionHeaderWrapper = styled.div<{ $isEnd: string }>`
   display: flex;
 
   padding: 0 10px 0 34px;
@@ -18,7 +18,7 @@ const SectionHeaderWrapper = styled.div`
 
   .content {
     display: flex;
-    justify-content: space-between;
+    justify-content: ${(props) => props.$isEnd};
     align-items: center;
     flex: 1;
     margin-left: 20px;

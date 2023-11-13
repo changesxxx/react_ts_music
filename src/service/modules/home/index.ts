@@ -1,5 +1,5 @@
 import Request from '@/service'
-import type { IBanners, IRecommendList } from './type'
+import type { IBanners, IRecommendList, INewDiscList } from './type'
 
 /* 轮播图 */
 export function fetchGetBanner() {
@@ -12,5 +12,12 @@ export function fetchGetBanner() {
 export function fetchGetHotRecommend() {
   return Request.get<IRecommendList>({
     url: '/personalized'
+  })
+}
+
+/* 新碟上架 */
+export function fetchGetNewDisc() {
+  return Request.get<INewDiscList>({
+    url: '/album/list'
   })
 }
