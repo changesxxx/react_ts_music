@@ -1,6 +1,7 @@
 type Fn = () => void
 type Timer = ReturnType<typeof setInterval> | null
 
+/* 节流 */
 export function _throttle(fn: Fn, wait: number, frist = true, end = false) {
   let timer: Timer = null
 
@@ -38,6 +39,21 @@ export function _throttle(fn: Fn, wait: number, frist = true, end = false) {
     }
   }
   return throttle
+}
+
+/* 防抖 */
+export function _shake(fn: Fn, delay = 1000) {
+  let timer: Timer = null
+
+  function shake() {
+    if (timer) clearTimeout(timer)
+
+    timer = setTimeout(() => {
+      fn.apply(this)
+    }, delay)
+  }
+
+  return shake
 }
 
 export {}

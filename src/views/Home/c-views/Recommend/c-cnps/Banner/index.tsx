@@ -1,4 +1,4 @@
-import React, { memo, useRef, useState } from 'react'
+import React, { memo, useRef, useState, useCallback } from 'react'
 import type { FC, ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -26,10 +26,12 @@ const Banner: FC<Iprops> = (props) => {
     }
   }
 
-  function getCurrentIndex(currentIndex: number) {
-    setIndex(currentIndex)
-    console.log(currentIndex)
-  }
+  const getCurrentIndex = useCallback(
+    (currentIndex: number) => {
+      setIndex(currentIndex)
+    },
+    [bannerList]
+  )
 
   return (
     <BannerWrapper
@@ -37,19 +39,21 @@ const Banner: FC<Iprops> = (props) => {
     >
       <div className="banner wrap-v2">
         <div className="left ">
-          <Carousel
-            autoplay={true}
-            ref={carouselRef}
-            beforeChange={getCurrentIndex}
-          >
-            {bannerList.map((item) => {
-              return (
-                <div key={item.imageUrl} className="banner-item">
-                  <img src={item.imageUrl} alt="" />
-                </div>
-              )
-            })}
-          </Carousel>
+          {bannerList.length && (
+            <Carousel
+              autoplay={true}
+              ref={carouselRef}
+              afterChange={getCurrentIndex}
+            >
+              {bannerList.map((item) => {
+                return (
+                  <div key={item.imageUrl} className="banner-item">
+                    <img src={item.imageUrl} alt="" />
+                  </div>
+                )
+              })}
+            </Carousel>
+          )}
         </div>
         <div className="right sprite_download">
           <Link to="/download" className="link sprite_download">
