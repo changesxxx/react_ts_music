@@ -47,10 +47,10 @@ const NewDiscItemWrapper = styled.div`
 
   .disc-name {
     width: 90%;
-    text-overflow: ellipsis;
+    /*    text-overflow: ellipsis;
     overflow: hidden;
     word-break: break-all;
-    white-space: nowrap;
+    white-space: nowrap; */
     line-height: 18px;
     a {
       color: #000;

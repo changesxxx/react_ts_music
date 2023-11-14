@@ -55,4 +55,35 @@ export interface INewDiscList {
   products: INewDisc[]
 }
 
+/* 榜单 */
+export interface Al {
+  id: number
+  name: string
+  picUrl: string
+  picStr: string
+  pic: number
+}
+
+export interface ISong {
+  al: Al
+}
+
+export interface IRank {
+  id: number
+  name: string
+  coverImgId: number
+  coverImgUrl: string
+  coverImgIdStr: string
+  createTime: number
+  status: number
+  updateTime: number
+  trackUpdateTime: number
+  description: string
+  tracks: ISong[]
+}
+
+export interface IRankList {
+  playlist: IRank
+}
+
 export {}

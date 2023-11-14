@@ -21,7 +21,7 @@ const NewDiscItem: FC<Iprops> = (props) => {
         <a href="./" className="mask sprite_covor"></a>
         <div className="sprite_icon play"></div>
       </div>
-      <p className="disc-name">
+      <p className="disc-name omit">
         <a href="./"> {newDisc.albumName}</a>
       </p>
       <p className="author">
